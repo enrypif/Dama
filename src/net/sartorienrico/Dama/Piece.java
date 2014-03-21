@@ -31,8 +31,8 @@ public class Piece {
 
 	// GAME METHOD
 	
-	public LinkedList<Move> _possibleMoves() {
-		List<Tile> possibleMoves = this.possibleMoves();
+	public LinkedList<Move> possibleMoves() {
+		List<Tile> possibleMoves = this.allMoves();
 		List<Tile> eatMoves = this.eatMoves();
 		
 		List<Move> resultList = new LinkedList<Move>();
@@ -60,17 +60,16 @@ public class Piece {
 				//Mossa non valida
 				valid = false;
 			
-			/* Se la mossa è effettivamente valida la aggiungo alla possibleMoves
 			if (valid == true) {
-				resultList.add()
+				Move move = new Move(this.currentTile, destination, eated);
+				resultList.add(move);
 			}
-			*/
 		}
 		
 		return null;
 	}
 	
-	public LinkedList<Tile> possibleMoves() {
+	public LinkedList<Tile> allMoves() {
 		LinkedList<Tile> resultList = new LinkedList<Tile>();
 		for (Tile tile : this.simpleMoves()) {
 			resultList.add(tile);

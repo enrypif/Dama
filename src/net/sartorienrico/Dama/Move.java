@@ -28,7 +28,7 @@ public class Move {
 		this.origin = origin;
 		this.setOriginUiUpdate();
 		if (this.origin.getPiece() != null)
-			for (Tile tilemove : this.origin.getPiece().possibleMoves()) 
+			for (Tile tilemove : this.origin.getPiece().allMoves()) 
 				System.out.println(tilemove);
 	}
 	
@@ -41,7 +41,7 @@ public class Move {
 	// FIELD SET
 
 	public void setDestination(Tile destination) throws Exception {		
-		List<Tile> possibleMoves = this.origin.getPiece().possibleMoves();
+		List<Tile> possibleMoves = this.origin.getPiece().allMoves();
 		List<Tile> eatMoves = this.origin.getPiece().eatMoves();
 		
 		// Criteri per validare la destinazione:

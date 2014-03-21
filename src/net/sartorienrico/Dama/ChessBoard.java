@@ -82,7 +82,7 @@ public class ChessBoard {
 				Piece piece = ( ! tile.getEMPTY() ) ? tile.getPiece() : null;
 				if ( piece != null
 						&& tile.getPiece().getTeamColor() == this.teamColorTurn
-						&& ! piece.possibleMoves().isEmpty()
+						&& ! piece.allMoves().isEmpty()
 						){
 					if ( ! piece.canEat())
 						activableTiles.add(tile);
