@@ -31,7 +31,7 @@ public class Piece {
 
 	// GAME METHOD
 	
-	public LinkedList<Move> possibleMoves() {
+	public List<Move> possibleMoves() {
 		List<Tile> possibleMoves = this.allMoves();
 		List<Tile> eatMoves = this.eatMoves();
 		
@@ -66,7 +66,7 @@ public class Piece {
 			}
 		}
 		
-		return null;
+		return resultList;
 	}
 	
 	public LinkedList<Tile> allMoves() {

@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChessBoard {
+	
 	private Tile tileMatrix[][]; 	// Matrice scacchiera ogni tile rappresenta un riquadro
 	public Move move;
 	private int teamColorTurn;
+	public AI ai;
 	
 	/**
 	 * ChessBoard constructor
@@ -32,9 +34,11 @@ public class ChessBoard {
 				}
 			}
 		}
+		ai = new AI(this);
 		this.teamColorTurn = 0;
 		this.changeTeamColorTurn();
 		Dama.uiDama.setVisible(true);
+		
 	}
 	
 	
@@ -52,7 +56,13 @@ public class ChessBoard {
 		this.teamColorTurn = 1 - this.teamColorTurn;
 		// Cosa succede quando cambia il turno?
 		// Si illuminano le pedine che possono essere mosse.
-		activeTiles();
+		if (this.teamColorTurn == 1){
+			activeTiles();
+		} else {
+			clearTilesState();
+			//chiamo IA;
+			this.ai.exec();
+		}
 		return this.teamColorTurn;
 	}
 	
@@ -70,6 +80,14 @@ public class ChessBoard {
 		else { // Il giocatore di questo turno ha perso
 			// System.out.println("Il giocatore " + ((this.teamColorTurn == 0) ? "bianco" : "nero") + " ha perso");
 			Dama.uiDama.uiWin( 1 - teamColorTurn );
+		}
+	}
+	
+	public void clearTilesState() {
+		for (Tile[] tiles : this.tileMatrix) {
+			for (Tile tile : tiles) {
+				tile.setSelected(false);
+			}
 		}
 	}
 	

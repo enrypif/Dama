@@ -40,7 +40,7 @@ public class Move {
 	
 	// FIELD SET
 
-	public void setDestination(Tile destination) throws Exception {		
+	public void setDestination(Tile destination, boolean autoExec) throws Exception {		
 		List<Tile> possibleMoves = this.origin.getPiece().allMoves();
 		List<Tile> eatMoves = this.origin.getPiece().eatMoves();
 		
@@ -49,14 +49,14 @@ public class Move {
 		// - Se posso mangiare allora devo mangiare
 		
 		if (( eatMoves.isEmpty() || eatMoves.contains(destination) ) && possibleMoves.contains(destination)) { 
-			this.destination = destination;
-			if (eatMoves.contains(this.destination)) {
-				this.eated = getEatedPiece(this.origin, this.destination);
+			if (eatMoves.contains(destination)) {
+				this.eated = getEatedPiece(this.origin, destination);
 				// Se sei una pedina non puoi mangiare un damone
 				if (this.eated.getPiece().getIsCrowned() && ! this.origin.getPiece().getIsCrowned())
 					throw new MoveException("Se sei una pedina non puoi mangiare un damone");
 			}
-			this.uiUpdate();
+			this.destination = destination;
+			if (autoExec == true) this.exec();
 		} else if ( ! eatMoves.isEmpty() && ! eatMoves.contains(destination)) { 
 			// Se potevo mangiare e non ho mangiato controllo che le pedine che potevo mangiare non fossero damoni 
 			// in tal caso posso muovere anche se non mangio
@@ -65,7 +65,7 @@ public class Move {
 					throw new MoveException("Mossa non valida, devi mangiare!");
 			}
 			this.destination = destination;
-			this.uiUpdate();
+			if (autoExec == true) this.exec();
 		} else
 			throw new MoveException("Mossa non valida");
 	}
@@ -88,7 +88,7 @@ public class Move {
 		this.origin.getUiTile().setBackground(Color.yellow);
 	}
 	
-	public void uiUpdate(){
+	public void exec(){
 		if (this.origin != null && this.destination != null) {
 			if (this.eated != null) 
 				this.eated.setPiece(null);
@@ -107,4 +107,12 @@ public class Move {
 	public Tile getOrigin() {
 		return this.origin;
 	}
+
+	@Override
+	public String toString() {
+		return "Move [origin=" + origin + ", destination=" + destination
+				+ ", eated=" + eated + ", isMultiple=" + isMultiple + "]";
+	}
+	
+	
 }
