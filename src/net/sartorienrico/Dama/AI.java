@@ -12,6 +12,11 @@ public class AI {
 	}
 
 	public void exec() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			System.err.println(e);
+		}
 		Move actionMove = this.randomMove();
 		actionMove.exec();
 	}

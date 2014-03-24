@@ -93,7 +93,7 @@ public class Tile {
 					if (chessboard.move == null)
 						chessboard.move = new Move(thisTile);
 					else {
-						chessboard.move.setDestination(thisTile);
+						chessboard.move.setDestination(thisTile, true);
 						chessboard.move = null;
 					}
 				} catch(Exception exc){
