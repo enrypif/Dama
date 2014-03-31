@@ -22,15 +22,12 @@ public class AIUtilFunctions {
 		return recursiveBestEatMovesRoute(piece, null);
 	}
 	
-	
-	// DA FINIRE
-	
 	private static List<Move> recursiveBestEatMovesRoute(Piece piece, Move lastMove) {
 		List<Move> myPossibleMoves = piece.possibleMoves();
 		List<List<Move>> possibleRoute = new LinkedList<List<Move>>(); 
 		for (Move move : myPossibleMoves) {
 			if (Move.getEatedPiece(move.getOrigin(), move.getDestination()) != null) { // Se mangio
-				TempPiece tempPiece = new TempPiece(piece.getTeamColor(), move.getDestination(), piece.getDirection());
+				Piece tempPiece = new Piece(piece.getTeamColor(), move.getDestination(), piece.getDirection());
 				possibleRoute.add( recursiveBestEatMovesRoute(tempPiece, move) );
 			}
 		}

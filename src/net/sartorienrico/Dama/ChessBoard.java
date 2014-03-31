@@ -70,12 +70,8 @@ public class ChessBoard {
 			//chiamo IA;
 			(new Thread(){
 				public void run(){
-					try {
-						Thread.sleep(500);
-						ai.exec();
-					} catch (InterruptedException e) {
-						System.err.println(e);
-					}
+					ai.exec();
+					
 				}
 			}).start();
 		}

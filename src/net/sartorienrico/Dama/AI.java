@@ -20,15 +20,12 @@ public class AI {
 			for (int i = bestRoute.size()-1; i >= 0; i--) {
 				System.out.println(bestRoute.get(i));
 				if (bestRoute.get(i) != null){
-					try {
-						Thread.sleep(200);
-					} catch (InterruptedException e) { 
-						System.err.println(e);
-					}
+					aiWait();
 					bestRoute.get(i).exec();
 				}
 			}
 		} else { // Se ho mangiata singola
+			aiWait();
 			actionMove.exec();
 		}
 		
@@ -59,5 +56,15 @@ public class AI {
 		System.out.println("Possible moves: ");
 		for (Move move : possibleMoves)
 			System.out.println(move);
+	}
+	
+	// Util method
+	
+	private void aiWait() {
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) { 
+			System.err.println(e);
+		}
 	}
 }
