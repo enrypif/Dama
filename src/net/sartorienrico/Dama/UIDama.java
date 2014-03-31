@@ -28,7 +28,6 @@ public class UIDama extends JFrame {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLayout(new GridLayout(8,8));
 		this.setVisible(true);
-		
 	}
 
 	public int getWidth() {

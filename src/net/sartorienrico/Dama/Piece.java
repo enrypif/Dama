@@ -24,7 +24,7 @@ public class Piece {
 
 	public Piece(int teamColor, Tile currentTile, int direction) {
 		this.teamColor = teamColor;
-		this.currentTile = currentTile;
+		this.setCurrentTile(currentTile);
 		this.isCrowned = false;
 		this.direction = direction;
 	}
@@ -189,5 +189,10 @@ public class Piece {
 		this.isCrowned = isCrowned;
 		if (isCrowned) this.direction = DIRECTION_ANY;
 	}
+
+	public int getDirection() {
+		return direction;
+	}
+	
 	
 }

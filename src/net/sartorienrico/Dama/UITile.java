@@ -16,7 +16,7 @@ public class UITile extends JButton implements MouseListener {
 	private int tileColor;
 	
 	public UITile(int color) {
-		super();
+		//super();
 		this.tileColor = color;
 		Dama.uiDama.add(this);
 		Dama.uiDama.getContentPane().setComponentZOrder(this, 0);

@@ -18,7 +18,6 @@ public class Move {
 	private Tile origin;
 	private Tile destination;
 	private Tile eated;
-	private boolean isMultiple;
 
 	public Move(Tile origin) throws Exception {
 		if (origin.getPiece() == null) 
@@ -75,10 +74,16 @@ public class Move {
 	}
 	
 	public boolean isMultiple() {
-		return isMultiple;
+		// Questo metodo richiede che la mossa sia stata eseguita
+		if ( this.eated != null && destination.getPiece().canEat()) 
+			return true;
+		return false;
 	}
+	
+	
 
 	public static Tile getEatedPiece(Tile origin, Tile destination) {
+		if ( Math.abs(origin.getX() - destination.getX()) == 1) return null; 
 		int x = (origin.getX() + destination.getX()) / 2;
 		int y = (origin.getY() + destination.getY()) / 2;
 		return destination.getChessboard().getTileMatrix()[x][y];
@@ -96,10 +101,9 @@ public class Move {
 			this.destination.setPiece(this.origin.getPiece());
 			this.origin.setPiece(null);
 			//this.origin.getUiTile().setBackground();
-			if ( this.eated != null && destination.getPiece().canEat()){
-				this.isMultiple = true;
+			if (this.isMultiple())
 				destination.getChessboard().activeTiles();
-			} else
+			else
 				destination.getChessboard().changeTeamColorTurn();
 		}
 	}
@@ -107,11 +111,15 @@ public class Move {
 	public Tile getOrigin() {
 		return this.origin;
 	}
+	
+	public Tile getDestination() {
+		return this.destination;
+	}
 
 	@Override
 	public String toString() {
 		return "Move [origin=" + origin + ", destination=" + destination
-				+ ", eated=" + eated + ", isMultiple=" + isMultiple + "]";
+				+ ", eated=" + eated + "]";
 	}
 	
 	

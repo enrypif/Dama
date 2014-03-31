@@ -12,13 +12,26 @@ public class AI {
 	}
 
 	public void exec() {
-		try {
-			Thread.sleep(500);
-		} catch (InterruptedException e) {
-			System.err.println(e);
-		}
 		Move actionMove = this.randomMove();
-		actionMove.exec();
+		List<Move> bestRoute = AIUtilFunctions.bestEatMovesRoute(actionMove.getOrigin().getPiece());
+		
+		if (bestRoute.size() != 1) { // Se c'è mangiata multipla
+			System.out.println("Best route length = " + bestRoute.size() );
+			for (int i = bestRoute.size()-1; i >= 0; i--) {
+				System.out.println(bestRoute.get(i));
+				if (bestRoute.get(i) != null){
+					try {
+						Thread.sleep(200);
+					} catch (InterruptedException e) { 
+						System.err.println(e);
+					}
+					bestRoute.get(i).exec();
+				}
+			}
+		} else { // Se ho mangiata singola
+			actionMove.exec();
+		}
+		
 	}
 	
 	public Move randomMove() {
@@ -38,7 +51,7 @@ public class AI {
 		}
 		return allPossibleMoves;
 	}
-
+	
 	// DEBUG METHOD
 	
 	public void printAllPossibleMoves(){

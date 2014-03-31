@@ -54,6 +54,13 @@ public class ChessBoard {
 	
 	public int changeTeamColorTurn(){
 		this.teamColorTurn = 1 - this.teamColorTurn;
+		
+		// Controllo se qualcuno a vinto!
+		if (getActivableTiles() == null) {
+			Dama.uiDama.uiWin( 1 - teamColorTurn );
+			return 0;
+			// FINE !
+		}
 		// Cosa succede quando cambia il turno?
 		// Si illuminano le pedine che possono essere mosse.
 		if (this.teamColorTurn == 1){
@@ -61,7 +68,16 @@ public class ChessBoard {
 		} else {
 			clearTilesState();
 			//chiamo IA;
-			this.ai.exec();
+			(new Thread(){
+				public void run(){
+					try {
+						Thread.sleep(500);
+						ai.exec();
+					} catch (InterruptedException e) {
+						System.err.println(e);
+					}
+				}
+			}).start();
 		}
 		return this.teamColorTurn;
 	}
