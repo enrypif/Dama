@@ -15,6 +15,7 @@ public class ChessBoard {
 	 * Metodo per l'inizializzazione di una nuova ChessBoard
 	 * @return	ChessBoard	Returns a new instance of ChessBoard
 	 */
+	
 	public ChessBoard() { 
 		super();
 		this.tileMatrix = new Tile[8][8];
@@ -37,10 +38,13 @@ public class ChessBoard {
 		ai = new AI(this);
 		this.teamColorTurn = 0;
 		this.changeTeamColorTurn();
-		Dama.uiDama.setVisible(true);
-		
+		Dama.uiDama.setVisible(true);		
 	}
 	
+	public ChessBoard(Tile[][] tileMatrix, int teamColorTurn) {
+		this.tileMatrix = tileMatrix.clone();
+		this.teamColorTurn = teamColorTurn;
+	}
 	
 	
 	// Utils method
@@ -104,6 +108,10 @@ public class ChessBoard {
 	}
 	
 	public List<Tile> getActivableTiles() {
+		return getActivableTiles(this.teamColorTurn);
+	}
+	
+	public List<Tile> getActivableTiles(int teamColor) {
 		List<Tile> activableTiles = new ArrayList<Tile>();
 		List<Tile> activableEatTiles = new ArrayList<Tile>();
 		for (Tile[] tiles : this.tileMatrix){
@@ -111,7 +119,7 @@ public class ChessBoard {
 				// Filtro le pedine che possono essere mosse
 				Piece piece = ( ! tile.getEMPTY() ) ? tile.getPiece() : null;
 				if ( piece != null
-						&& tile.getPiece().getTeamColor() == this.teamColorTurn
+						&& tile.getPiece().getTeamColor() == teamColor
 						&& ! piece.allMoves().isEmpty()
 						){
 					if ( ! piece.canEat())
@@ -128,7 +136,7 @@ public class ChessBoard {
 		else if ( ! activableTiles.isEmpty())
 			return activableTiles;
 		else // Se ritorno null significa che il giocatore non ha più mosse a disposizione, quindi ha perso.
-			return null;  
+			return null; 
 	}
 	
 	// Getters and Setters

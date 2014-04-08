@@ -28,6 +28,17 @@ public class Tile {
 		this.EMPTY = true;
 		this.addGUI(this.cellColor);
 	}
+	
+	public Tile(int cellColor, int x, int y, ChessBoard chessboard, Piece piece, Boolean withGUI) {
+		this.chessboard = chessboard;
+		this.x = x;
+		this.y = y;
+		this.setCellColor(cellColor); // 0 : black - 1 : white
+		this.piece = null;
+		this.EMPTY = (piece != null) ? false : true;
+		if (withGUI == true)
+			this.addGUI(this.cellColor);
+	}
 
 	// GAME METHOD
 	
@@ -62,6 +73,20 @@ public class Tile {
 			this.uiTile.setUIPiece(null);
 		}
 	}
+	
+	public void setPiece(Piece piece, Boolean withGUI) {
+		if (piece != null){
+			this.EMPTY = false;
+			this.piece = piece;
+			if (withGUI == true)
+				this.uiTile.setUIPiece(piece);
+		} else {
+			this.EMPTY = true;
+			this.piece = null;
+			if (withGUI == true)
+				this.uiTile.setUIPiece(null);
+		}
+	}
 
 	public Boolean getEMPTY() {
 		return EMPTY;
@@ -69,6 +94,10 @@ public class Tile {
 
 	public ChessBoard getChessboard() {
 		return chessboard;
+	}
+	
+	public void setChessboard(ChessBoard chessboard) {
+		this.chessboard = chessboard;
 	}
 
 	public int getX() {

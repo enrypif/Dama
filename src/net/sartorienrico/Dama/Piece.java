@@ -28,6 +28,13 @@ public class Piece {
 		this.isCrowned = false;
 		this.direction = direction;
 	}
+	
+	public Piece(int teamColor, Tile currentTile, Boolean isCrowned, int direction ) {
+		this.teamColor = teamColor;
+		this.currentTile = currentTile;
+		this.isCrowned = isCrowned;
+		this.direction = direction;
+	}
 
 	// GAME METHOD
 	
@@ -81,7 +88,11 @@ public class Piece {
 	}
 	
 	public LinkedList<Tile> simpleMoves() {
-		ChessBoard chessBoard = this.currentTile.getChessboard();
+		return simpleMoves(this.currentTile.getChessboard());
+	}
+	
+	public LinkedList<Tile> simpleMoves(ChessBoard chessBoard) {
+		// Costruisco il metodo con la chessBoard generica per poter usare il metodo anche durante le simulazioni
 		LinkedList<Tile> resultList = new LinkedList<Tile>();
 		
 		int[][] singleOffsets = getSingleOffsets();
@@ -96,7 +107,10 @@ public class Piece {
 	}
 	
 	public LinkedList<Tile> eatMoves() {
-		ChessBoard chessBoard = this.currentTile.getChessboard();
+		return eatMoves(this.currentTile.getChessboard());
+	}
+	
+	public LinkedList<Tile> eatMoves(ChessBoard chessBoard) {
 		LinkedList<Tile> resultList = new LinkedList<Tile>();
 		
 		int[][] singleOffsets = getSingleOffsets();
@@ -112,6 +126,27 @@ public class Piece {
 						&& chessBoard.getTileMatrix()[this.currentTile.getX() + doubleOffset[0]][this.currentTile.getY() + doubleOffset[1]].getEMPTY() 
 						&& chessBoard.getTileMatrix()[this.currentTile.getX() + singleOffset[0]][this.currentTile.getY() + singleOffset[1]].getPiece().getTeamColor() != this.teamColor )
 					resultList.add(chessBoard.getTileMatrix()[this.currentTile.getX() + doubleOffset[0]][this.currentTile.getY() + doubleOffset[1]]);
+		}
+		
+		return resultList;
+	}
+	
+	public LinkedList<Tile> eatMoves(Tile[][] tileMatrix) {
+		LinkedList<Tile> resultList = new LinkedList<Tile>();
+		
+		int[][] singleOffsets = getSingleOffsets();
+		int[][] doubleOffsets = getDoubleOffsets();
+		
+		for (int i = 0; i < singleOffsets.length; i++) {
+			int[] singleOffset = singleOffsets[i];
+			int[] doubleOffset = doubleOffsets[i];
+			
+			if (ChessBoard.existsTile(this.currentTile.getX() + singleOffset[0], this.currentTile.getY() + singleOffset[1]) 
+					&& ChessBoard.existsTile(this.currentTile.getX() + doubleOffset[0], this.currentTile.getY() + doubleOffset[1]))
+				if ( ! tileMatrix[this.currentTile.getX() + singleOffset[0]][this.currentTile.getY() + singleOffset[1]].getEMPTY() 
+						&& tileMatrix[this.currentTile.getX() + doubleOffset[0]][this.currentTile.getY() + doubleOffset[1]].getEMPTY() 
+						&& tileMatrix[this.currentTile.getX() + singleOffset[0]][this.currentTile.getY() + singleOffset[1]].getPiece().getTeamColor() != this.teamColor )
+					resultList.add(tileMatrix[this.currentTile.getX() + doubleOffset[0]][this.currentTile.getY() + doubleOffset[1]]);
 		}
 		
 		return resultList;
@@ -194,5 +229,11 @@ public class Piece {
 		return direction;
 	}
 	
+	@Override
+	public Piece clone() {
+		Piece piece = new Piece(this.teamColor, this.currentTile, this.direction);
+		piece.isCrowned = this.isCrowned;
+		return piece;
+	}
 	
 }

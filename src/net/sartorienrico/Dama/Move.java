@@ -14,7 +14,7 @@ import java.util.List;
  * 
  */
 
-public class Move {
+public class Move implements Comparable<Move>{
 	private Tile origin;
 	private Tile destination;
 	private Tile eated;
@@ -75,7 +75,7 @@ public class Move {
 	
 	public boolean isMultiple() {
 		// Questo metodo richiede che la mossa sia stata eseguita
-		if ( this.eated != null && destination.getPiece().canEat()) 
+		if ( Move.getEatedPiece(this.origin, this.destination) != null && destination.getPiece().canEat()) 
 			return true;
 		return false;
 	}
@@ -83,10 +83,14 @@ public class Move {
 	
 
 	public static Tile getEatedPiece(Tile origin, Tile destination) {
-		if ( Math.abs(origin.getX() - destination.getX()) == 1) return null; 
+		return getEatedPiece(origin, destination, destination.getChessboard());
+	}
+	
+	public static Tile getEatedPiece(Tile origin, Tile destination, ChessBoard chessBoard) {
+		if ( Math.abs(origin.getX() - destination.getX()) != 2) return null; 
 		int x = (origin.getX() + destination.getX()) / 2;
 		int y = (origin.getY() + destination.getY()) / 2;
-		return destination.getChessboard().getTileMatrix()[x][y];
+		return chessBoard.getTileMatrix()[x][y];
 	}
 	
 	public void setOriginUiUpdate() {
@@ -108,6 +112,29 @@ public class Move {
 		}
 	}
 	
+	// Utilizzo questo metodo per simulare le mosse su una ChessBoard che utilizzo solamente a questo scopo
+	// In caso di mangiata multipla bisogna passare l'ultima mossa della serie
+	public void exec(Tile[][] tileMatrix){
+		Tile newOrigin = tileMatrix[this.origin.getX()][this.origin.getY()];
+		Tile newDestination = tileMatrix[this.destination.getX()][this.destination.getY()];
+		
+		Piece originPiece = this.origin.getPiece();
+		Piece newOriginPiece = new Piece(originPiece.getTeamColor(), newOrigin, originPiece.getIsCrowned(), originPiece.getDirection()); 
+		
+		newOrigin.setPiece(newOriginPiece, false);
+		
+		Tile newEated = null;
+		if (this.eated != null)
+			 newEated = tileMatrix[this.eated.getX()][this.eated.getY()];
+		if (newOrigin != null && newDestination != null) {
+			if (newEated != null) 
+				newEated.setPiece(null, false);
+			newOrigin.getPiece().setCurrentTile(newDestination);
+			newDestination.setPiece(newOrigin.getPiece(), false);
+			newOrigin.setPiece(null, false);
+		}
+	}
+	
 	public Tile getOrigin() {
 		return this.origin;
 	}
@@ -119,7 +146,39 @@ public class Move {
 	@Override
 	public String toString() {
 		return "Move [origin=" + origin + ", destination=" + destination
-				+ ", eated=" + eated + "]";
+				+ ", eated=" + eated + " ]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Move))
+			return false;
+		Move other = (Move) obj;
+		if (destination == null) {
+			if (other.destination != null)
+				return false;
+		} else if (!destination.equals(other.destination))
+			return false;
+		if (eated == null) {
+			if (other.eated != null)
+				return false;
+		} else if (!eated.equals(other.eated))
+			return false;
+		if (origin == null) {
+			if (other.origin != null)
+				return false;
+		} else if (!origin.equals(other.origin))
+			return false;
+		return true;
+	}
+
+	@Override
+	public int compareTo(Move move) {
+		return AIEngine.evaluationFunction(this) - AIEngine.evaluationFunction(move);
 	}
 	
 	

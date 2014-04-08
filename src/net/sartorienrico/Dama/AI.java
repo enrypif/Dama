@@ -1,5 +1,6 @@
 package net.sartorienrico.Dama;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -12,31 +13,45 @@ public class AI {
 	}
 
 	public void exec() {
-		Move actionMove = this.randomMove();
-		List<Move> bestRoute = AIUtilFunctions.bestEatMovesRoute(actionMove.getOrigin().getPiece());
+		List<Move> route = this.nextRoute();
 		
-		if (bestRoute.size() != 1) { // Se c'è mangiata multipla
-			System.out.println("Best route length = " + bestRoute.size() );
-			for (int i = bestRoute.size()-1; i >= 0; i--) {
-				System.out.println(bestRoute.get(i));
-				if (bestRoute.get(i) != null){
+		if (route.size() != 1) { // Se c'è mangiata
+			for (int i = route.size()-1; i >= 0; i--) {
+				if (route.get(i) != null){
 					aiWait();
-					bestRoute.get(i).exec();
+					route.get(i).exec();
 				}
 			}
 		} else { // Se ho mangiata singola
 			aiWait();
-			actionMove.exec();
+			route.get(0).exec();
 		}
-		
 	}
 	
-	public Move randomMove() {
+	
+	public List<Move> nextRoute() {
+		List<Move> route = new LinkedList<Move>(); // Creo la lista risultato
+		
+		//List<Move> bestRoute = AIEngine.bestEatMovesRoute(actionMove.getOrigin().getPiece());
+		
+		// Di tutte le possibili mosse scelgo la migliore
 		List<Move> myPossibleMoves = allPossibleMoves();
-		int range = myPossibleMoves.size();
-		int index = (int)(Math.random() * (range));
-		return myPossibleMoves.get(index);		
+		for (Move move : myPossibleMoves)
+			System.out.println(AIEngine.evaluationFunction(move) + " - " + move);
+		Move bestMove = Collections.max(myPossibleMoves);
+		
+		if (Move.getEatedPiece(bestMove.getOrigin(), bestMove.getDestination()) != null) { // È una mossa mangiata
+			route.addAll(AIEngine.bestEatMovesRoute(bestMove.getOrigin().getPiece()));
+		} else { // È una mossa semplice
+			route.add(bestMove);
+		}
+		
+		return route;		
 	}
+	
+	// Devo costruire un metodo che filtri le mosse
+	
+	
 	
 	public List<Move> allPossibleMoves() {
 		List<Move> allPossibleMoves = new LinkedList<Move>();
@@ -49,15 +64,6 @@ public class AI {
 		return allPossibleMoves;
 	}
 	
-	// DEBUG METHOD
-	
-	public void printAllPossibleMoves(){
-		List<Move> possibleMoves = allPossibleMoves();
-		System.out.println("Possible moves: ");
-		for (Move move : possibleMoves)
-			System.out.println(move);
-	}
-	
 	// Util method
 	
 	private void aiWait() {
@@ -66,5 +72,14 @@ public class AI {
 		} catch (InterruptedException e) { 
 			System.err.println(e);
 		}
+	}
+	
+	// DEBUG METHOD
+	
+	public void printAllPossibleMoves() {
+		List<Move> possibleMoves = allPossibleMoves();
+		System.out.println("Possible moves: ");
+		for (Move move : possibleMoves)
+			System.out.println(move);
 	}
 }
