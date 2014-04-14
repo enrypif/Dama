@@ -71,11 +71,11 @@ public class AIEngine {
 		updateTileChessBoardPointer(simulation);
 		List<Tile> activableTiles = simulation.getActivableTiles(1 - move.getOrigin().getChessboard().getTeamColorTurn());
 		// Analizzo tutte le possibili mosse e controllo quante mosse mangiate potrebbe effettuare il giocatore nemico ed assegno il punteggio di conseguenza
+		if (activableTiles == null) return 0;
 		for (Tile tile : activableTiles) {
 			List<Move> moves = tile.getPiece().possibleMoves();
 			for (Move thisMove : moves) {
 				int eatLength = bestEatMovesRouteLength(thisMove.getOrigin().getPiece());
-				System.out.println(eatLength);
 				numberOfPossibleDeath += eatLength;
 			}
 		}
