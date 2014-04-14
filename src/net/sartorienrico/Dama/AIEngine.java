@@ -63,25 +63,23 @@ public class AIEngine {
 	// Private methods
 	
 	private static int deathScore(Move move) {
+		int numberOfPossibleDeath = 0;
 		Tile[][] origTileMatrix = move.getDestination().getChessboard().getTileMatrix();
 		Tile[][] destTileMatrix = cloneTileMatrix(origTileMatrix);
 		move.exec(destTileMatrix);
 		ChessBoard simulation = new ChessBoard(destTileMatrix, move.getOrigin().getChessboard().getTeamColorTurn());
 		updateTileChessBoardPointer(simulation);
 		List<Tile> activableTiles = simulation.getActivableTiles(1 - move.getOrigin().getChessboard().getTeamColorTurn());
+		// Analizzo tutte le possibili mosse e controllo quante mosse mangiate potrebbe effettuare il giocatore nemico ed assegno il punteggio di conseguenza
 		for (Tile tile : activableTiles) {
 			List<Move> moves = tile.getPiece().possibleMoves();
 			for (Move thisMove : moves) {
-				if (Move.getEatedPiece(thisMove.getOrigin(), thisMove.getDestination(), simulation) != null)
-					// Se la pedina che viene mangiata (se viene mangiata) è la destinazione della mossa in valutazione allora ritorno il puntaggio
-					if (move.getDestination().equals(Move.getEatedPiece(thisMove.getOrigin(), thisMove.getDestination(), simulation))){
-						//if (thisMove.isMultiple())
-						//	return DEATH_WEIGHT * 2;
-						return DEATH_WEIGHT;
-					}
+				int eatLength = bestEatMovesRouteLength(thisMove.getOrigin().getPiece());
+				System.out.println(eatLength);
+				numberOfPossibleDeath += eatLength;
 			}
 		}
-		return 0;
+		return numberOfPossibleDeath * DEATH_WEIGHT;
 	}
 		
 	private static int eatsScore(Move move) {
