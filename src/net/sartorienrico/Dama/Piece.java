@@ -59,7 +59,7 @@ public class Piece {
 				// Se potevo mangiare e non ho mangiato controllo che le pedine che potevo mangiare non fossero damoni 
 				// in tal caso posso muovere anche se non mangio
 				for (Tile i : eatMoves) {
-					if ( ! Move.getEatedPiece(this.currentTile, i).getPiece().getIsCrowned() )
+					if ( ! Move.getEatedPiece(this.currentTile, i).getPiece().getIsCrowned() && ! this.isCrowned)
 						// Mossa non valida, devi mangiare!
 						valid = false;
 				}
