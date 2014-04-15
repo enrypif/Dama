@@ -25,7 +25,7 @@ public class AI {
 		} else { // Se ho mangiata singola
 			aiWait();
 			route.get(0).exec();
-		}
+		}	
 	}
 	
 	
@@ -36,6 +36,7 @@ public class AI {
 		
 		// Di tutte le possibili mosse scelgo la migliore
 		List<Move> myPossibleMoves = allPossibleMoves();
+		if (myPossibleMoves == null || myPossibleMoves.size() == 0) Dama.uiDama.uiWin(0);
 		for (Move move : myPossibleMoves)
 			System.out.println(AIEngine.evaluationFunction(move) + " - " + move);
 		Move bestMove = Collections.max(myPossibleMoves);

@@ -47,7 +47,7 @@ public class Move implements Comparable<Move>{
 		// - Se non posso mangiare qualunque mossa valida è una buona destinazione
 		// - Se posso mangiare allora devo mangiare
 		
-		if (( eatMoves.isEmpty() || eatMoves.contains(destination) ) && possibleMoves.contains(destination)) { 
+		if ( ( eatMoves.isEmpty() || eatMoves.contains(destination) ) && possibleMoves.contains(destination)) { 
 			if (eatMoves.contains(destination)) {
 				this.eated = getEatedPiece(this.origin, destination);
 				// Se sei una pedina non puoi mangiare un damone
@@ -60,7 +60,9 @@ public class Move implements Comparable<Move>{
 			// Se potevo mangiare e non ho mangiato controllo che le pedine che potevo mangiare non fossero damoni 
 			// in tal caso posso muovere anche se non mangio
 			for (Tile i : eatMoves) {
-				if ( ! getEatedPiece(this.origin, i).getPiece().getIsCrowned() )
+				if ( ! getEatedPiece(this.origin, i).getPiece().getIsCrowned())
+					throw new MoveException("Mossa non valida, devi mangiare!");
+				else if (this.origin.getPiece().getIsCrowned())
 					throw new MoveException("Mossa non valida, devi mangiare!");
 			}
 			this.destination = destination;
