@@ -61,7 +61,7 @@ public class ChessBoard {
 		
 		// Controllo se qualcuno a vinto!
 		if (getActivableTiles() == null) {
-			Dama.uiDama.uiWin( 1 - teamColorTurn );
+			Dama.win( 1 - teamColorTurn );
 			return 0;
 			// FINE !
 		}
@@ -95,7 +95,7 @@ public class ChessBoard {
 			}
 		else { // Il giocatore di questo turno ha perso
 			// System.out.println("Il giocatore " + ((this.teamColorTurn == 0) ? "bianco" : "nero") + " ha perso");
-			Dama.uiDama.uiWin( 1 - teamColorTurn );
+			Dama.win( 1 - teamColorTurn );
 		}
 	}
 	

@@ -1,7 +1,16 @@
 package net.sartorienrico.Dama;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontFormatException;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,8 +34,7 @@ public class UIDama extends JFrame {
 		this.width = width;
 		this.setResizable(false);
 		this.setSize(width, height);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new GridLayout(8,8));
+		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		this.setVisible(true);
 	}
 
@@ -38,13 +46,52 @@ public class UIDama extends JFrame {
 		return height;
 	}
 	
+	public static void uiNewGame() {
+		Dama.uiDama = new UIDama(800, 798);
+		Dama.uiDama.setLayout(new GridLayout(8,8));
+		
+	}
+	
 	public void uiWin(int teamColor) {
-		this.setLayout(new GridLayout(1,1));
-		JPanel panel = new JPanel();
-		String winnerString = "Il giocatore " + ((teamColor == 0) ? "bianco" : "nero") + " ha vinto";
+		JPanel panel = new JPanel(){
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			  protected void paintComponent(Graphics g) {
+
+			    super.paintComponent(g);
+			    try {                
+			          Image image = ImageIO.read(new File("res/Dama_init.jpg"));
+			          g.drawImage(image , 0, 0, null);
+			       } catch (IOException ex) {
+			            // handle exception...
+			       }
+					
+			}
+		};
+		panel.setLayout(new BorderLayout());
+		String winnerString = "VINCE IL GIOCATORE " + ((teamColor == 0) ? "BIANCO" : "NERO");
 		JLabel winnerLabel = new JLabel(winnerString);
+		winnerLabel.setVerticalAlignment(JLabel.CENTER);
+		winnerLabel.setHorizontalAlignment(JLabel.CENTER);
+		
+		
+		try {
+			Font font = Font.createFont(Font.TRUETYPE_FONT, new File("res/Chalkduster.ttf")).deriveFont(35f);
+			winnerLabel.setFont(font);
+		} catch (FontFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		winnerLabel.setVisible(true);
-		panel.add(winnerLabel);
+		panel.add(winnerLabel, BorderLayout.CENTER);
 		panel.setVisible(true);
 		this.setContentPane(panel);
 		

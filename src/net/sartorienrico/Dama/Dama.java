@@ -5,11 +5,17 @@ public class Dama {
 	static UIDama uiDama;
 	
 	public static void main(String[] args) {
-		
-		uiDama = new UIDama(800, 798);
-		
+		newGame();
+		//win(0);
+	}
+	
+	public static void newGame() {
+		UIDama.uiNewGame();
 		new ChessBoard();
-		
+	}
+	
+	public static void win(int teamColor) {
+		uiDama.uiWin(teamColor);
 	}
 
 }
