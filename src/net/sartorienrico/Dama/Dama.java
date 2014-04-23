@@ -5,8 +5,13 @@ public class Dama {
 	static UIDama uiDama;
 	
 	public static void main(String[] args) {
-		newGame();
+		menu();
+		//newGame();
 		//win(0);
+	}
+	
+	public static void menu() {
+		new DamaMenu();
 	}
 	
 	public static void newGame() {
