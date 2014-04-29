@@ -19,6 +19,11 @@ public class Move implements Comparable<Move>{
 	private Tile destination;
 	private Tile eated;
 
+	/**
+	 * Creo una mossa con solo l'origine. Effettuando tutti i controlli del caso.
+	 * @param origin
+	 * @throws Exception
+	 */
 	public Move(Tile origin) throws Exception {
 		if (origin.getPiece() == null) 
 			throw new MoveException("Impossibile creare una mossa partendo da una tile senza pedina.");
@@ -31,6 +36,12 @@ public class Move implements Comparable<Move>{
 				System.out.println(tilemove);
 	}
 	
+	/**
+	 * Creo una mossa già completa con origine, destinazione, e posizione della pedina mangiata nel caso in cui vi sia.
+	 * @param origin
+	 * @param destination
+	 * @param eated
+	 */
 	public Move(Tile origin, Tile destination, Tile eated){
 		this.origin = origin;
 		this.eated = eated;
@@ -76,18 +87,28 @@ public class Move implements Comparable<Move>{
 	}
 	
 	public boolean isMultiple() {
-		// Questo metodo richiede che la mossa sia stata eseguita
 		if ( Move.getEatedPiece(this.origin, this.destination) != null && destination.getPiece().canEat()) 
 			return true;
 		return false;
 	}
 	
-	
-
+	/**
+	 * Metodo che data origine e destinazione mi dice se è una mossa mangiata
+	 * @param origin
+	 * @param destination
+	 * @return
+	 */
 	public static Tile getEatedPiece(Tile origin, Tile destination) {
 		return getEatedPiece(origin, destination, destination.getChessboard());
 	}
 	
+	/**
+	 * Metodo che data origine e destinazione di una specifica chessBoard mi dice se è una mossa mangiata
+	 * @param origin
+	 * @param destination
+	 * @param chessBoard
+	 * @return
+	 */
 	public static Tile getEatedPiece(Tile origin, Tile destination, ChessBoard chessBoard) {
 		if ( Math.abs(origin.getX() - destination.getX()) != 2) return null; 
 		int x = (origin.getX() + destination.getX()) / 2;
@@ -95,10 +116,9 @@ public class Move implements Comparable<Move>{
 		return chessBoard.getTileMatrix()[x][y];
 	}
 	
-	public void setOriginUiUpdate() {
-		this.origin.getUiTile().setBackground(Color.yellow);
-	}
-	
+	/**
+	 * Eseguo la mossa
+	 */
 	public void exec(){
 		if (this.origin != null && this.destination != null) {
 			if (this.eated != null) 
@@ -114,8 +134,11 @@ public class Move implements Comparable<Move>{
 		}
 	}
 	
-	// Utilizzo questo metodo per simulare le mosse su una ChessBoard che utilizzo solamente a questo scopo
-	// In caso di mangiata multipla bisogna passare l'ultima mossa della serie
+	/**
+	 * Utilizzo questo metodo per simulare le mosse su una ChessBoard che utilizzo solamente a questo scopo
+	 * In caso di mangiata multipla bisogna passare l'ultima mossa della serie
+	 * @param tileMatrix
+	 */
 	public void exec(Tile[][] tileMatrix){
 		Tile newOrigin = tileMatrix[this.origin.getX()][this.origin.getY()];
 		Tile newDestination = tileMatrix[this.destination.getX()][this.destination.getY()];
@@ -145,6 +168,10 @@ public class Move implements Comparable<Move>{
 		return this.destination;
 	}
 
+	public void setOriginUiUpdate() {
+		this.origin.getUiTile().setBackground(Color.yellow);
+	}
+	
 	@Override
 	public String toString() {
 		return "Move [origin=" + origin + ", destination=" + destination

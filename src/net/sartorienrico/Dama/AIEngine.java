@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * In questa classe implemento delle funzioni statiche che possono tornare utili all'AI.
+ * Classe statica in cui implemento delle funzioni statiche che possono tornare utili all'AI.
  * 
  * @author enrico
  *
@@ -60,8 +60,8 @@ public class AIEngine {
 		return score;
 	}
 	
-	// Private methods
-	
+	// Metodi che mi permettono di assegnare un punteggio alle mosse 
+
 	private static int deathScore(Move move) {
 		int numberOfPossibleDeath = 0;
 		Tile[][] origTileMatrix = move.getDestination().getChessboard().getTileMatrix();
@@ -131,7 +131,7 @@ public class AIEngine {
 	
 	/**
 	 * Metodo che data una pedina restituisce il numero massimo di pedine che può mangiare
-	 * @param piece
+	 * @param Piece
 	 * @return numero di mangiate
 	 */
 	
@@ -139,7 +139,14 @@ public class AIEngine {
 		return bestEatMovesRoute(piece).size() - 1;
 	}
 	
-	
+	/**
+	 * Metodo ricorsivo che mi permette di calcolare il miglior percorso di mangiate data una pedina e l'ultima mossa fatta,
+	 * il secondo parametro mi serve per effettuare la ricorsione.
+	 * Il metodo restituisce una lista che deve essere usata come pila. Ossia la prima mossa da effettuare è quella in coda.
+	 * @param piece
+	 * @param lastMove
+	 * @return List<Move> Miglior percorso di mosse disponibile data una pedina
+	 */
 	private static List<Move> recursiveBestEatMovesRoute(Piece piece, Move lastMove) {
 		List<Move> myPossibleMoves = piece.possibleMoves();
 		List<List<Move>> possibleRoute = new LinkedList<List<Move>>(); 
@@ -171,6 +178,11 @@ public class AIEngine {
 		}
 	}
 	
+	/**
+	 * Mi permette di clonare la matrice della scacchiera per effettuare simulazioni
+	 * @param origTileMatrix
+	 * @return
+	 */
 	private static Tile[][] cloneTileMatrix(Tile[][] origTileMatrix) {
 		Tile[][] destTileMatrix = new Tile[8][8];
 		for	(int j = 7; j >= 0; j--){ // Scorro ed inizializzo gli elementi della scacchiera
@@ -185,6 +197,7 @@ public class AIEngine {
 		}
 		return destTileMatrix;
 	}
+	
 	
 	private static ChessBoard updateTileChessBoardPointer(ChessBoard referChessBoard) {
 		Tile[][] tileMatrix = referChessBoard.getTileMatrix();

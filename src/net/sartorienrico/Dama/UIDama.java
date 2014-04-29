@@ -25,7 +25,7 @@ public class UIDama extends JFrame {
 	private int width;
 	
 	/**
-	 * Constructor of chessboard interface
+	 * Costruttore dell'UI (scacchiera)
 	 *  
 	 * @param width
 	 * @param height

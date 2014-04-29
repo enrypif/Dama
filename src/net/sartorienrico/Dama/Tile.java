@@ -109,6 +109,10 @@ public class Tile {
 	}
 
 	// GUI METHOD
+	/**
+	 * Aggiungo all'entità logica "Tile" una "UITile" che è la rispettiva interfaccia grafica
+	 * @param cellColor
+	 */
 	public void addGUI(int cellColor){
 		this.uiTile = new UITile(cellColor);
 		this.uiTile.genericEvent = new ActionListener() {

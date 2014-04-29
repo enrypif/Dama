@@ -38,6 +38,10 @@ public class Piece {
 
 	// GAME METHOD
 	
+	/**
+	 * Restituisce tutte le mosse disponibili per la pedina corrente
+	 * @return
+	 */
 	public List<Move> possibleMoves() {
 		List<Tile> possibleMoves = this.allMoves();
 		List<Tile> eatMoves = this.eatMoves();
@@ -76,6 +80,10 @@ public class Piece {
 		return resultList;
 	}
 	
+	/**
+	 * Restituisce tutte le Tile
+	 * @return
+	 */
 	public LinkedList<Tile> allMoves() {
 		LinkedList<Tile> resultList = new LinkedList<Tile>();
 		for (Tile tile : this.simpleMoves()) {
@@ -87,6 +95,10 @@ public class Piece {
 		return resultList;
 	}
 	
+	/**
+	 * Ritorna tutte le mosse semplici, ossia non mangiata
+	 * @return
+	 */
 	public LinkedList<Tile> simpleMoves() {
 		return simpleMoves(this.currentTile.getChessboard());
 	}
@@ -106,6 +118,10 @@ public class Piece {
 		return resultList;
 	}
 	
+	/**
+	 * Ritorna tutte le mosse mangiata
+	 * @return
+	 */
 	public LinkedList<Tile> eatMoves() {
 		return eatMoves(this.currentTile.getChessboard());
 	}
@@ -152,6 +168,10 @@ public class Piece {
 		return resultList;
 	}
 	
+	/**
+	 * Funzione che guarda se ho mosse mangiata disponibili
+	 * @return
+	 */
 	public Boolean canEat() {
 		// Se sono un damone posso mangiare chiunque
 		if ( this.getIsCrowned() && ! this.eatMoves().isEmpty() ) return true;

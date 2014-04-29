@@ -20,6 +20,10 @@ public class DamaMenu extends JFrame {
 	private final int height = 300;
 	private final int width = 300;
 	
+	/**
+	 * Costruisco la schermatina iniziale, con un MouseListener 
+	 * che aspetta un click in un qualsiasi punto della finestra per creare una nuova finestra di gioco
+	 */
 	public DamaMenu() {
 		this.setSize(width, height);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

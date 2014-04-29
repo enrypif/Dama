@@ -48,7 +48,12 @@ public class ChessBoard {
 	
 	
 	// Utils method
-	
+	/**
+	 * Mi dice se la Tile agli indici specificati esiste
+	 * @param i
+	 * @param j
+	 * @return
+	 */
 	public static Boolean existsTile(int i, int j) {
 		if (i >= 0 && i <= 7 && j >= 0 && j <= 7) // Sono all'interno della scacchiera
 			return true;
@@ -56,6 +61,10 @@ public class ChessBoard {
 			return false;
 	}
 	
+	/**
+	 * Cambio turno
+	 * @return
+	 */
 	public int changeTeamColorTurn(){
 		this.teamColorTurn = 1 - this.teamColorTurn;
 		
@@ -82,6 +91,10 @@ public class ChessBoard {
 		return this.teamColorTurn;
 	}
 	
+	/**
+	 * Colora tutte le Tile che possono essere origine di mosse.
+	 * Se non esistono tile di questo tipo vince il giocatore avversario
+	 */
 	public void activeTiles() {
 		List<Tile>activableTiles = getActivableTiles();
 		if (activableTiles != null)
@@ -99,6 +112,9 @@ public class ChessBoard {
 		}
 	}
 	
+	/**
+	 * Decoloro tutte le Tile
+	 */
 	public void clearTilesState() {
 		for (Tile[] tiles : this.tileMatrix) {
 			for (Tile tile : tiles) {
@@ -107,6 +123,10 @@ public class ChessBoard {
 		}
 	}
 	
+	/**
+	 * Restituisce tutte le tile del giocatore del turno corrente che possono essere origine di mosse
+	 * @return
+	 */
 	public List<Tile> getActivableTiles() {
 		return getActivableTiles(this.teamColorTurn);
 	}

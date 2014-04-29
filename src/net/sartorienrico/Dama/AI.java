@@ -8,10 +8,19 @@ public class AI {
 
 	ChessBoard chessBoard;
 	
+	/**
+	 * Costruttore su una specifica chessBoard.
+	 * Prendo questo parametro perché oltre alla chessBoard di gioco utilizzo altre chessBoard per la simulazione di altre mosse
+	 * @param chessBoard
+	 */
 	public AI(ChessBoard chessBoard) {
 		this.chessBoard = chessBoard;
 	}
 
+	/**
+	 * Eseguo la lista di mosse ritornata dal metodo "nextRoute"
+	 * Le mosse della lista contengono al loro interno le tile d'origine e di destinazione della chessBoard su cui deve essere eseguita la mossa.
+	 */
 	public void exec() {
 		List<Move> route = this.nextRoute();
 		
@@ -28,7 +37,11 @@ public class AI {
 		}	
 	}
 	
-	
+	/**
+	 * Tra tutte le mosse possibili ritorno la migliore,
+	 * Se il giocatore non ha più mosse disponibili vince l'avversario. (Es. Se ho pedine bloccate)
+	 * @return 
+	 */
 	public List<Move> nextRoute() {
 		List<Move> route = new LinkedList<Move>(); // Creo la lista risultato
 		
@@ -52,8 +65,10 @@ public class AI {
 	
 	// Devo costruire un metodo che filtri le mosse
 	
-	
-	
+	/**
+	 * Per tutte le pedine che hanno si possono muovere estraggo le mosse disponibili
+	 * @return
+	 */
 	public List<Move> allPossibleMoves() {
 		List<Move> allPossibleMoves = new LinkedList<Move>();
 		List<Tile> activableTiles = this.chessBoard.getActivableTiles();
